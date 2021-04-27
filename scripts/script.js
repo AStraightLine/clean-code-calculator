@@ -93,7 +93,7 @@ function operate(a, operator, b) {
 //                 Loop checking the last digit and rounding before popping the last digit until in 
 //                 desired length range.
 function adjustResultLength(result) {
-    if ((((parseInt(result)).toString()).length) >= 10) {
+    if ((((parseInt(result)).toString()).length) > 10) {
         return "NaN";
     } else if (result.length >= 10) {
         let resultString = result.toString();
@@ -152,34 +152,91 @@ function equalsHandler(currentOperatorPress) {
     // Check if the user has only entered one number and then hit equals:
     if (lastOperator === '' || lastInputWasOperation) {
         return;
+    } else if (result == "Don't" || result == "NaN") {
+        subDisplay.textContent = operandA + ' ' + lastOperator;
+        display.textContent = result;
+        result = operandA;
+        console.log(operandA);
+        displayValue = '0';
+        operandB = '0';
     } else {
         operandB = displayValue;
         subDisplay.textContent = operandA + ' ' + lastOperator + ' ' + operandB + ' ' + currentOperatorPress;
         result = operate(operandA, lastOperator, operandB);
         display.textContent = result;
-        lastOperator = currentOperatorPress;
-        operandA = result;
-        displayValue = '0';
+        if (result == "Don't" || result == "NaN") { // Check repeats itself for the two different states in which these values can be present 
+                                                    // in this function, I.E. just recieved or second time through. 
+            subDisplay.textContent = operandA + ' ' + lastOperator;
+            display.textContent = result;
+            result = operandA;
+            console.log(operandA);
+            displayValue = '0';
+            operandB = '0';
+        } else {
+            lastOperator = currentOperatorPress;
+            operandA = result;
+            displayValue = '0';
+        }
     }
     lastInputWasOperation = true;
 }
 
-
-function additionHandler(currentOperatorPress) {
-    operandB = displayValue;
-    subDisplay.textContent = operandB + ' ' + currentOperatorPress;
-    result = operate(operandA, currentOperatorPress, operandB);
-    display.textContent = result;
-    lastOperator = currentOperatorPress;
-    operandA = result;
-    subDisplay.textContent = result + ' ' + currentOperatorPress;
-    displayValue = '0';
+// After an operation, update the displays, the operators and operands, reset displayValue
+function updateReset() {
+    if (result == "Don't" || result == "NaN") {
+        subDisplay.textContent = operandA + ' ' + currentOperatorPress;
+        display.textContent = result;
+        lastOperator = currentOperatorPress;
+        result = operandA;
+        displayValue = '0';
+        operandB = '0';
+    } else {    
+        subDisplay.textContent = result + ' ' + currentOperatorPress;
+        display.textContent = result;
+        lastOperator = currentOperatorPress;
+        operandA = result;
+        displayValue = '0';
+    } 
     lastInputWasOperation = true;
 }
 
-function subtractionHandler(currentOperatorPress) {
-    // check if last operator was empty, if so switch a and b
-    // also check if displayValue is positive or negative, do we have to reswitch them if they are? 0 10 - vs 0 -10 -
+function additionHandler() {
+    if (lastOperator === '') {
+        lastOperator = currentOperatorPress;
+        result = operate(operandA, lastOperator, operandB);
+    } else if (lastOperator === '=') {
+        subDisplay.textContent = result;
+        lastOperator = currentOperatorPress;
+    } else {
+        result = operate(operandA, lastOperator, operandB);
+    }
+    updateReset();
+}
+
+function subtractionHandler() {
+    if (lastOperator === '') {
+        lastOperator = currentOperatorPress;
+        result = operate(operandB, lastOperator, operandA);
+    } else if (lastOperator === '=') {
+        subDisplay.textContent = result;
+        lastOperator = currentOperatorPress;
+    } else {
+        result = operate(operandA, lastOperator, operandB);
+    }
+    updateReset();
+}
+
+function multiplicationADivisionHandler() {
+    if (lastOperator === '') {
+        lastOperator = currentOperatorPress;
+        result = displayValue;
+    } else if (lastOperator === '=') {
+        subDisplay.textContent = result;
+        lastOperator = currentOperatorPress;
+    } else {
+        result = operate(operandA, lastOperator, operandB);
+    }
+    updateReset();
 }
 
 // First stage of operation event handling: 
@@ -188,25 +245,39 @@ function operationEventHandler(currentOperatorPress) {
     switch(currentOperatorPress) {
         case 'backspace':
             backspace();
-            break;
+            return;
         case '.':
             decimalHandler(currentOperatorPress);
-            break;
+            return;
         case 'unary':
             unaryHandler(currentOperatorPress);
-            break;
+            return;
         case '%':
             centHandler(currentOperatorPress);
-            break;
+            return;
         case '=':
             equalsHandler(currentOperatorPress);
-            break;
-        case '+':
-            additionHandler(currentOperatorPress);
-            break;
-        case '-':
-            subtractionHandler(currentOperatorPress);
-            break;
+            return;
+    }
+    // Make sure user doesn't spam multiple operations proper in a row, but update them on what they're spamming:
+    if (lastInputWasOperation) {
+        lastOperator = currentOperatorPress;
+        subDisplay.textContent = operandA + ' ' + currentOperatorPress;
+        return;
+    } else {
+        operandB = displayValue;
+        switch(currentOperatorPress) {
+            case '+':
+                additionHandler();
+                break;
+            case '-':
+                subtractionHandler();
+                break;
+            case '*':
+            case '/':
+                multiplicationADivisionHandler();
+                break;
+        }   
     }
 }
 
@@ -220,11 +291,10 @@ let currentOperatorPress = '';
 let lastInputWasOperation = false;
 
 let displayValue = '0';
-let operator = '';
 let lastOperator = '';
-let operandA = 0;
-let operandB = 0;
-let result = 0;
+let operandA = '0';
+let operandB = '0';
+let result = '0';
 
 display.textContent = displayValue;
 
@@ -260,7 +330,6 @@ numberButtons.forEach((button) => {
 // Clean reset of everything. 
 clearButton.addEventListener('click', () => {
     displayValue = '0';
-    operator = '';
     lastOperator = '';
     currentOperatorPress = '';
     lastInputWasOperation = false;
