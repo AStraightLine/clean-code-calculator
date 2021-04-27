@@ -1,0 +1,116 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    font-family: monospace;
+    color: black;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#calcContainer {
+    width: 450px;
+    height: 550px;
+    background-color: #77C7DE;
+    border-radius: 5px;
+    border: 2px solid black;
+    filter: drop-shadow(0.35em 0.4em 0.35em black);
+}
+
+#calcHeader {
+    height: 125px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    filter: drop-shadow(0.1em 0.1em 0.15em black);
+}
+
+#calcSubDisplay {
+    width: 405px;
+    height: 25px;
+    background-color: white;
+    line-height: 25px;
+    font-size: 1.25em;
+    text-align: right;
+    padding-right: 5px;
+    border-top: 3px solid #1f1f1f;
+    border-left: 3px solid #1f1f1f;
+    border-right: 3px solid #1f1f1f;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    margin-top: 15px;
+}
+
+#calcDisplay {
+    width: 405px;
+    height: 75px;
+    background-color: white;
+    border-bottom: 3px solid #1f1f1f;
+    border-left: 3px solid #1f1f1f;
+    border-right: 3px solid #1f1f1f;
+    line-height: 75px;
+    font-size: 5em;
+    text-align: right;
+    padding-right: 5px;
+}
+
+#calcBodyContainer {
+    width: 450px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#calcBody {
+    width: 424px;
+    height: 395px;
+    margin-top: 5px;
+}
+
+.calcButton {
+    width: 99px;
+    height: 75px;
+    border: none;
+    border-radius: 4px;
+    margin-top: 6px;
+    font-size: 1.5em;
+    background-color: white;
+    filter: drop-shadow(0.15em 0.15em 0.1em black);
+}
+
+.leftButton {
+    margin-left: 3px;
+}
+
+.operatorButton {
+    background-color: #c9e9f2;
+}
+
+#clearButton {
+    background-color: #c9e9f2;
+}
+
+#floatButton {
+    background-color: white;
+}
+
+.calcButton:hover {
+    background-color: #919191;
+    color: white;
+}
+
+#floatButton:hover {
+    background-color: #919191;
+    color: white;
+}
+
+#clearButton:hover {
+    background-color: #919191;
+    color: white;
+}
