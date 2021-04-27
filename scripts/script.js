@@ -408,6 +408,7 @@ clearButton.addEventListener('click', clearButtonHandler, false);
 window.addEventListener('keydown', (e) => {
     let keyCode = e.key;
     let button;
+    // Get relevant button for number press as function requires
     switch (keyCode) {
         case '0':
             button = document.querySelector('#zeroButton');
