@@ -125,6 +125,39 @@ function backspace() {
     display.textContent = displayValue;
 }
 
+// Clean reset of everything. 
+function clearButtonHandler() {
+    displayValue = '0';
+    lastOperator = '';
+    currentOperatorPress = '';
+    lastInputWasOperation = false;
+    operandA = 0;
+    operandB = 0;
+    result = 0;
+    subDisplay.textContent = '';
+    display.textContent = displayValue;
+}
+
+// Max display length of 10 cancel the operation if at this max.
+function numberButtonsEventHandler(button) {
+    if ((displayValue.length) == 10) {
+        // a number was still the last input, but make no change to that number.
+        operandB = displayValue;
+        lastInputWasOperation = false;
+        return;
+    } else {
+        if (displayValue == '0') {
+            displayValue = button.value;
+            display.textContent = displayValue;
+        } else {
+            displayValue += button.value;
+            display.textContent = displayValue;
+        }
+    }
+    // The last thing pressed was a number not an operator so:
+    lastInputWasOperation = false;
+}
+
 function decimalHandler(currentOperatorPress) {
     if (displayValue.includes('.')) {
         return;
@@ -156,7 +189,6 @@ function equalsHandler(currentOperatorPress) {
         subDisplay.textContent = operandA + ' ' + lastOperator;
         display.textContent = result;
         result = operandA;
-        console.log(operandA);
         displayValue = '0';
         operandB = '0';
     } else {
@@ -169,7 +201,6 @@ function equalsHandler(currentOperatorPress) {
             subDisplay.textContent = operandA + ' ' + lastOperator;
             display.textContent = result;
             result = operandA;
-            console.log(operandA);
             displayValue = '0';
             operandB = '0';
         } else {
@@ -281,6 +312,67 @@ function operationEventHandler(currentOperatorPress) {
     }
 }
 
+function keyDirector(keyCode, button) {
+    switch(keyCode) {
+        case 'Delete':
+            clearButtonHandler();
+            break;
+        case 'Tab':
+            currentOperatorPress = 'unary';
+            operationEventHandler(currentOperatorPress);
+            break;
+        case '%':
+            currentOperatorPress = '%';
+            operationEventHandler(currentOperatorPress);
+            break;
+        case '/':
+            currentOperatorPress = '/';
+            operationEventHandler(currentOperatorPress);
+            break;
+        case '*':
+            currentOperatorPress = '*';
+            operationEventHandler(currentOperatorPress);
+            break;
+        case '-':
+            currentOperatorPress = '-';
+            operationEventHandler(currentOperatorPress);
+            break;
+        case '+':
+            currentOperatorPress = '+';
+            operationEventHandler(currentOperatorPress);
+            break;
+        case '=':
+            currentOperatorPress = '=';
+            operationEventHandler(currentOperatorPress);
+            break;
+        case 'Enter':
+            currentOperatorPress = '=';
+            operationEventHandler(currentOperatorPress);
+            break;
+        case 'c':
+        case 'C':
+            currentOperatorPress = 'backspace';
+            operationEventHandler(currentOperatorPress);
+            break;
+        case '.':
+            currentOperatorPress = '.';
+            operationEventHandler(currentOperatorPress);
+            break;
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+            numberButtonsEventHandler(button);
+            break;
+    }
+}
+
 const display = document.querySelector('#calcDisplay');
 const subDisplay = document.querySelector('#calcSubDisplay');
 const numberButtons = document.querySelectorAll('.numberButton');
@@ -305,37 +397,48 @@ operatorButtons.forEach((button) => {
     });
 });
 
-// Max display length of 10 cancel the operation if at this max.
 numberButtons.forEach((button) => {
-    button.addEventListener('click', () => {        
-        if ((displayValue.length) == 10) {
-            // a number was still the last input, but make no change to that number.
-            operandB = displayValue;
-            lastInputWasOperation = false;
-            return;
-        } else {
-            if (displayValue == '0') {
-                displayValue = button.value;
-                display.textContent = displayValue;
-            } else {
-                displayValue += button.value;
-                display.textContent = displayValue;
-            }
-        }
-        // The last thing pressed was a number not an operator so:
-        lastInputWasOperation = false;
+    button.addEventListener('click', () => {       
+        numberButtonsEventHandler(button);
     });
 });
 
-// Clean reset of everything. 
-clearButton.addEventListener('click', () => {
-    displayValue = '0';
-    lastOperator = '';
-    currentOperatorPress = '';
-    lastInputWasOperation = false;
-    operandA = 0;
-    operandB = 0;
-    result = 0;
-    subDisplay.textContent = '';
-    display.textContent = displayValue;
+clearButton.addEventListener('click', clearButtonHandler, false);
+
+window.addEventListener('keydown', (e) => {
+    let keyCode = e.key;
+    switch (keyCode) {
+        case '0':
+            button = document.querySelector('#zeroButton');
+        case '1':
+            button = document.querySelector('#oneButton');
+            break;
+        case '2':
+            button = document.querySelector('#twoButton'); 
+            break;
+        case '3':
+            button = document.querySelector('#threeButton');
+            break;
+        case '4':
+            button = document.querySelector('#fourButton');
+            break;
+        case '5':
+            button = document.querySelector('#fiveButton');
+            break;
+        case '6':
+            button = document.querySelector('#sixButton');
+            break;
+        case '7':
+            button = document.querySelector('#sevenButton');
+            break;
+        case '8':
+            button = document.querySelector('#eightButton');
+            break;
+        case '9':
+            button = document.querySelector('#nineButton');
+            break;
+    }
+    keyDirector(keyCode, button);
 });
+
+
