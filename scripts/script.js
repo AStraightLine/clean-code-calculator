@@ -407,6 +407,7 @@ clearButton.addEventListener('click', clearButtonHandler, false);
 
 window.addEventListener('keydown', (e) => {
     let keyCode = e.key;
+    let button;
     switch (keyCode) {
         case '0':
             button = document.querySelector('#zeroButton');
