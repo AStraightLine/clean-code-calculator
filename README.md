@@ -12,4 +12,4 @@ This is an attempt at refactoring my earlier calculator build, with a focus on:
 6. All eventListerner functionality put into reusable functions for implementing keyboard functionality. 
 7. Keyboard functionality implemented for all operators. Bug with 'Enter' having functionality even when none is specified. 
 8. Implemented keyboard functionality for number entry
-9. Removed functionality on 'Enter' key, equals only mapped to '='.
+9. Removed functionality on 'Enter' key, equals only mapped to '='. As it seems 'Enter' also resends the currently selected key.
