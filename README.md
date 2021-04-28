@@ -15,3 +15,4 @@ This is an attempt at refactoring my earlier calculator build, with a focus on:
 9. Removed functionality on 'Enter' key, equals only mapped to '='. As it seems 'Enter' also resends the currently selected key.
 10. On user feedback, Implemented measures around use of '=' so that a user can either, chain operations after an equals with the result by pressing an operation button, or start a new calculation by selecting a new number directly after equals. Operations can still be chained without an equals, with an equals, but now the user doesn't have to hit
 AC to start a completely new calculation after '='.
+11. Bug fix to let the above work after a 'Nan' or "Don't" result.

@@ -199,7 +199,8 @@ function equalsHandler(currentOperatorPress) {
     } else if (result == "Don't" || result == "NaN") {
         subDisplay.textContent = operandA + ' ' + lastOperator;
         display.textContent = result;
-        result = operandA;
+        operandA = result;
+        lastOperator = currentOperatorPress;
         displayValue = '0';
         operandB = '0';
     } else {
@@ -211,6 +212,7 @@ function equalsHandler(currentOperatorPress) {
                                                     // in this function, I.E. just recieved or second time through. 
             subDisplay.textContent = operandA + ' ' + lastOperator;
             display.textContent = result;
+            lastOperator = currentOperatorPress;
             result = operandA;
             displayValue = '0';
             operandB = '0';
