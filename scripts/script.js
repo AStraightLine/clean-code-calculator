@@ -140,6 +140,17 @@ function clearButtonHandler() {
 
 // Max display length of 10 cancel the operation if at this max.
 function numberButtonsEventHandler(button) {
+
+    if (lastOperator === '=') {
+        console.log("we here");
+        displayValue = '0';
+        lastOperator = '';
+        lastInputWasOperation = false;
+        operandA = 0;
+        operandB = 0;
+        result = 0;
+    }
+
     if ((displayValue.length) == 10) {
         // a number was still the last input, but make no change to that number.
         operandB = displayValue;
