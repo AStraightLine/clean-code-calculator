@@ -345,10 +345,6 @@ function keyDirector(keyCode, button) {
             currentOperatorPress = '=';
             operationEventHandler(currentOperatorPress);
             break;
-        case 'Enter':
-            currentOperatorPress = '=';
-            operationEventHandler(currentOperatorPress);
-            break;
         case 'c':
         case 'C':
             currentOperatorPress = 'backspace';
